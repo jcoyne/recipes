@@ -32,7 +32,7 @@ module BaHarvest
     preparation = recipe.css('.preparation .prep-steps .step').map { |n| n.text.strip }
     thumbnail = html.at_css('meta[property="og:image"]').attribute('content').text
 
-    servings = recipe.at_css('.total-servings').text
+    servings = recipe.at_css('.total-servings').try(:text)
 
     { title: title, link: uri_str, thumbnail: thumbnail, servings: servings,
                ingredients: ingredient_list, preparation_steps: preparation }
