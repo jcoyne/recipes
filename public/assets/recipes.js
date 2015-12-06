@@ -33,6 +33,16 @@ function currentPage() {
     return boundsCheck(parseInt(currentState()));
 }
 
+function nextPage(e) {
+    e.preventDefault();
+    gotoPage(currentPage() + 1);
+}
+
+function previousPage(e) {
+    e.preventDefault();
+    gotoPage(currentPage() - 1);
+}
+
 function gotoPage(newPage) {
     index = boundsCheck(newPage)
     history.pushState({ index: index }, `page ${index}`, `#${index}`);
@@ -67,4 +77,7 @@ $.getJSON("/recipes").done(function(data) {
     recipes = data.recipes;
     route();
 });
+
+$('[data-action="prev"]').on('click', previousPage);
+$('[data-action="next"]').on('click', nextPage);
 
