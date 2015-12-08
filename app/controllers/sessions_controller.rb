@@ -1,4 +1,5 @@
 class SessionsController < Devise::SessionsController
+  skip_before_action :verify_authenticity_token
   def create
     headers['Access-Control-Allow-Origin'] = '*'
     respond_to do |format|
