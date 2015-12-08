@@ -16,4 +16,8 @@ class RecipesController < ApplicationController
 
     head :created, location: recipe
   end
+
+  def whoami
+    render text: current_user.email
+  end
 end

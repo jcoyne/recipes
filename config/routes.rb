@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :recipes, only: [:index, :show] do
       collection do
         post :import
+        get :whoami
       end
     end
   end
