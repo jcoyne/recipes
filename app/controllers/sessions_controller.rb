@@ -1,5 +1,6 @@
 class SessionsController < Devise::SessionsController
   def create
+    headers['Access-Control-Allow-Origin'] = '*'
     respond_to do |format|
       format.html { super }
       format.json {
