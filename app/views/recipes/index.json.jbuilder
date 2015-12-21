@@ -1,2 +1,2 @@
-json.recipes @recipes, :id, :title, :link, :thumbnail, :servings, :ingredients, :preparation_steps
+json.array! @recipes, partial: 'recipe', as: :recipe
 
