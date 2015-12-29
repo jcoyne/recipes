@@ -6,40 +6,21 @@
     <title>Recipes</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/recipes.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+    <base href="/" />
+<meta name="recipe-frontend/config/environment" content="%7B%22contentSecurityPolicy%22%3A%7B%22connect-src%22%3A%22%27self%27%20https%3A//calm-brook-9092.herokuapp.com%22%2C%22default-src%22%3A%22%27none%27%22%2C%22script-src%22%3A%22%27self%27%22%2C%22font-src%22%3A%22%27self%27%22%2C%22img-src%22%3A%22%27self%27%22%2C%22style-src%22%3A%22%27self%27%22%2C%22media-src%22%3A%22%27self%27%22%7D%2C%22modulePrefix%22%3A%22recipe-frontend%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/%22%2C%22locationType%22%3A%22auto%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22APP%22%3A%7B%22API_HOST%22%3A%22https%3A//calm-brook-9092.herokuapp.com%22%2C%22SERVER_TOKEN_ENDPOINT%22%3A%22https%3A//calm-brook-9092.herokuapp.com/users/sign_in%22%2C%22name%22%3A%22recipe-frontend%22%2C%22version%22%3A%220.0.0+d921ddc6%22%7D%2C%22ember-simple-auth%22%3A%7B%22authenticationRoute%22%3A%22recipes%22%7D%2C%22contentSecurityPolicyHeader%22%3A%22Content-Security-Policy-Report-Only%22%2C%22exportApplicationGlobal%22%3Afalse%2C%22browserify%22%3A%7B%22tests%22%3Atrue%7D%7D" />
+
+    <link rel="stylesheet" href="assets/vendor-e90b85f169eb47329513c2253e3333e2.css" integrity="sha256-sRY8jSb2DsMAa3f+lwjxvBco2xC14NPhem5cOEm20rc= sha512-KSsNbj3DNpuWvPfxs7I3JqBSP+JsomVsOLr/+Lp+Vv3uKD/UuqJAPX3ke3PN8HboOhnZWojG24/xKmcPl8E2ZQ==" >
+    <link rel="stylesheet" href="assets/recipe-frontend-d00cbc02d4516ef4a20de779f4ab8c9e.css" integrity="sha256-/03RfVYs4d0XI+lGOP4uNGtz7mRd76zb5t8qwVv3yBE= sha512-jw+fNoIv/ejBIEWYRQmd+PH1agbOYb9Sdg9cK7pp4qD5svXnv0cMCxBewwhP+PGbZeHX5okM3KYzdtYPtd1rog==" >
+
+    
   </head>
   <body>
+    
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Recipes</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#" onClick="defaultRoute()">Random</a></li>
-            <li><a href="#" data-action="prev">Previous</a></li>
-            <li><a href="#" data-action="next">Next</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    <script src="assets/vendor-05af7c63b7a26679c3d662bf59cfb952.js"></script>
+    <script src="assets/recipe-frontend-eb182db78be83331fc7aa6410e40c8a2.js"></script>
 
-    <div class="container">
-      <div id="recipe"></div>
-    </div><!-- /.container -->
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="assets/recipes.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
-
