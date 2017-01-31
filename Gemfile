@@ -9,9 +9,11 @@ gem 'devise'
 gem 'simple_token_authentication'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+# Javascript compressor
+gem 'uglifier', '>= 1.3.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
