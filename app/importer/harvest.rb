@@ -12,4 +12,9 @@ class Harvest
     html = Nokogiri::HTML(doc)
     parse(html, uri_str)
   end
+
+  # Override this in subclasses
+  def self.parse(html, uri_str)
+    html
+  end
 end

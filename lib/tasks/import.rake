@@ -1,7 +1,7 @@
 namespace :import do
   desc 'Import from BA'
   task :ba, [:url] => [:environment] do |t, args|
-    Recipe.create!(BaHarvest.harvest(args[:url]))
+    Recipe.create!(BaLdHarvest.harvest(args[:url]))
   end
 
   desc 'Import from EC'

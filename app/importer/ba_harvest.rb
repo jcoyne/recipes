@@ -1,3 +1,4 @@
+# This is an old screenscraper that stopped working.
 class BaHarvest < Harvest
 
   def self.parse(html, uri_str)
