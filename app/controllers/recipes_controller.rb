@@ -6,8 +6,9 @@ class RecipesController < ApplicationController
     respond_to do |format|
       format.json do
         @recipes = Recipe.all
+        headers['Access-Control-Allow-Origin'] = '*'
       end
-      format.html { redirect_to '/' }
+      format.html { render file: 'public/index.html', layout: false }
     end
 
   end
@@ -15,7 +16,7 @@ class RecipesController < ApplicationController
   def show
     respond_to do |format|
       format.json { @recipe = Recipe.find(params[:id]) }
-      format.html { redirect_to '/' }
+      format.html { render file: 'public/index.html', layout: false }
     end
   end
 
