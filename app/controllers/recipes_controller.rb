@@ -3,12 +3,21 @@ class RecipesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @recipes = Recipe.all
-    headers['Access-Control-Allow-Origin'] = '*'
+    respond_to do |format|
+      format.html { render file: 'public/index.html' }
+      format.json do
+        @recipes = Recipe.all
+        headers['Access-Control-Allow-Origin'] = '*'
+      end
+    end
+
   end
 
   def show
-    @recipe = Recipe.find(params[:id])
+    respond_to do |format|
+      format.html { render file: 'public/index.html' }
+      format.json { @recipe = Recipe.find(params[:id]) }
+    end
   end
 
   def import
