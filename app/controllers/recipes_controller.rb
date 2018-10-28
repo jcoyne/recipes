@@ -6,9 +6,8 @@ class RecipesController < ApplicationController
     respond_to do |format|
       format.json do
         @recipes = Recipe.all
-        # headers['Access-Control-Allow-Origin'] = '*'
       end
-      format.html { render plain: "Hey-o" }
+      format.html { redirect_to '/' }
     end
 
   end
