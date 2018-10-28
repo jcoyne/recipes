@@ -8,7 +8,7 @@ class RecipesController < ApplicationController
         @recipes = Recipe.all
         # headers['Access-Control-Allow-Origin'] = '*'
       end
-      format.html { redirect_to '/' }
+      format.html { render plain: "Hey-o" }
     end
 
   end
