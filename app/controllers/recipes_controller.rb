@@ -4,19 +4,19 @@ class RecipesController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html { render plain: 'public/index.html' }
       format.json do
         @recipes = Recipe.all
         headers['Access-Control-Allow-Origin'] = '*'
       end
+      format.html { redirect_to '/' }
     end
 
   end
 
   def show
     respond_to do |format|
-      format.html { render plain: 'public/index.html' }
       format.json { @recipe = Recipe.find(params[:id]) }
+      format.html { redirect_to '/' }
     end
   end
 
