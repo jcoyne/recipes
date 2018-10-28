@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
-gem 'rails', '5.1.4'
+gem 'rails', '5.1.6'
 
 gem 'pg'
 gem 'rails_12factor', group: :production
