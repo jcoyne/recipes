@@ -9,7 +9,17 @@ class BaLdHarvest < Harvest
       thumbnail: json['image'],
       servings: json['recipeYield'],
       ingredients: json['recipeIngredient'],
-      preparation_steps: json['recipeInstructions'].map { |how_to_step| how_to_step['text'] }
+      preparation_steps: steps(json['recipeInstructions'])
     }.tap { |x| puts x }
+  end
+
+
+  def self.steps(instructions)
+    if instructions.respond_to?(:map)
+      # Bon Appetit uses this
+      return instructions.map { |how_to_step| how_to_step['text'] }
+    end
+    # Delish uses this:
+    instructions
   end
 end
