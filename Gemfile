@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.6.4'
 
 gem 'rails', '5.2.1'
-
+gem 'sprockets', '~> 3.7.2' # remove on rails 6 
 gem 'pg'
 gem 'rails_12factor', group: :production
 gem 'devise'
