@@ -3,7 +3,6 @@ ruby '2.7.0'
 
 gem 'rails', '~> 6.0.2.1'
 gem 'pg'
-gem 'rails_12factor', group: :production
 gem 'devise'
 gem 'simple_token_authentication'
 
