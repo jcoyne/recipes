@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '3.2.1'
 
-gem 'rails', '~> 6.0.2.1'
+gem 'rails', '~> 7.0'
 gem 'pg'
 gem 'devise'
 gem 'simple_token_authentication'
