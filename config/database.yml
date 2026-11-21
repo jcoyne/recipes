@@ -22,5 +22,4 @@ test:
 
 production:
   <<: *default
-  adapter: pg
-  url: <%= ENV['DATABASE_URL'] %>
+  database: db/production.sqlite3
