@@ -21,6 +21,8 @@ end
 
 gem 'nokogiri'
 gem 'base64'
+# Shrinks and re-encodes downloaded recipe images (requires libvips with AVIF support)
+gem 'ruby-vips'
 
 group :development do
   gem 'listen', '~> 3.8'
