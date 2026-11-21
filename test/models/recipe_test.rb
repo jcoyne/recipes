@@ -16,13 +16,31 @@ class RecipeTest < ActiveSupport::TestCase
       ingredients: ['1 Tbsp. oil'], preparation_steps: ['Heat oil.'] }.merge(overrides)
   end
 
-  test 'create! writes a base64-encoded JSON file named after the title' do
+  test 'create! writes a base64-encoded JSON file named by the MD5 of its contents' do
     recipe = Recipe.create!(attrs)
 
     assert_equal 'make-ahead-gravy', recipe.id
-    raw = File.read(File.join(Recipe.directory, 'make-ahead-gravy.b64'))
+    files = Dir.children(Recipe.directory)
+    assert_equal 1, files.size
+    raw = File.read(File.join(Recipe.directory, files.first))
+    assert_equal "#{Digest::MD5.hexdigest(raw)}.b64", files.first
     refute_includes raw, 'Gravy'
-    assert_equal 'Make-Ahead Gravy', JSON.parse(Base64.decode64(raw))['title']
+    decoded = JSON.parse(Base64.decode64(raw))
+    assert_equal 'Make-Ahead Gravy', decoded['title']
+    assert_equal 'make-ahead-gravy', decoded['id']
+  end
+
+  test 'saving a change renames the file and keeps the id' do
+    Recipe.create!(attrs)
+    recipe = Recipe.find('make-ahead-gravy')
+    old_path = recipe.path
+
+    recipe.servings = '4 servings'
+    recipe.save!
+
+    refute File.exist?(old_path)
+    assert_equal [File.basename(recipe.path)], Dir.children(Recipe.directory)
+    assert_equal '4 servings', Recipe.find('make-ahead-gravy').servings
   end
 
   test 'find round-trips the attributes' do

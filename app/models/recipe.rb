@@ -1,14 +1,16 @@
 require 'base64'
+require 'digest'
 
-# A recipe stored as a Base64-encoded JSON file in data/recipes/<id>.b64,
-# so recipes live in the repository rather than the database.
+# A recipe stored as a Base64-encoded JSON file in data/recipes, so recipes live
+# in the repository rather than the database. Each file is named by the MD5 of
+# its contents (<md5>.b64) so the name doesn't reveal the recipe; the readable
+# id used in URLs is stored inside the file.
 class Recipe
   include ActiveModel::Model
   include ActiveModel::Attributes
 
   class DuplicateLink < StandardError; end
 
-  ID_FORMAT = /\A[a-z0-9][a-z0-9-]*\z/
   EXTENSION = '.b64'.freeze
 
   mattr_accessor :directory, default: Rails.root.join('data', 'recipes')
@@ -23,15 +25,15 @@ class Recipe
   attribute :preparation_steps, default: -> { [] }
   attribute :created_at, :datetime
 
+  # The file this recipe was loaded from or last saved to.
+  attr_reader :path
+
   def self.all
     Dir.glob(File.join(directory, "*#{EXTENSION}")).map { |path| load(path) }.sort_by { |r| [r.created_at || Time.at(0), r.id] }
   end
 
   def self.find(id)
-    path = path_for(id) if id.to_s.match?(ID_FORMAT)
-    raise ActiveRecord::RecordNotFound, "Couldn't find Recipe with id=#{id}" unless path && File.exist?(path)
-
-    load(path)
+    all.find { |r| r.id == id.to_s } || raise(ActiveRecord::RecordNotFound, "Couldn't find Recipe with id=#{id}")
   end
 
   def self.find_by_link(link)
@@ -43,11 +45,7 @@ class Recipe
   end
 
   def self.load(path)
-    new(JSON.parse(Base64.decode64(File.read(path))).merge('id' => File.basename(path, EXTENSION)))
-  end
-
-  def self.path_for(id)
-    File.join(directory, "#{id}#{EXTENSION}")
+    new(JSON.parse(Base64.decode64(File.read(path)))).tap { |recipe| recipe.instance_variable_set(:@path, path) }
   end
 
   def save!
@@ -55,13 +53,18 @@ class Recipe
 
     self.id ||= unique_id
     self.created_at ||= Time.current
+    content = Base64.encode64(JSON.pretty_generate(attributes))
+    new_path = File.join(directory, "#{Digest::MD5.hexdigest(content)}#{EXTENSION}")
+
     FileUtils.mkdir_p(directory)
-    File.write(self.class.path_for(id), Base64.encode64(JSON.pretty_generate(attributes.except('id'))))
+    File.write(new_path, content)
+    File.delete(path) if path && path.to_s != new_path && File.exist?(path)
+    @path = new_path
     true
   end
 
   def persisted?
-    id.present? && File.exist?(self.class.path_for(id))
+    path.present? && File.exist?(path)
   end
 
   def normalized_ingredients
@@ -80,10 +83,11 @@ class Recipe
   private
 
   def unique_id
+    taken = self.class.all.map(&:id)
     base = title.to_s.parameterize.presence || 'recipe'
     candidate = base
     n = 1
-    candidate = "#{base}-#{n += 1}" while File.exist?(self.class.path_for(candidate))
+    candidate = "#{base}-#{n += 1}" while taken.include?(candidate)
     candidate
   end
 end
