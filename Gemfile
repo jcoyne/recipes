@@ -1,10 +1,9 @@
 source 'https://rubygems.org'
 ruby '~> 3.2'
 
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 8.1.0'
 gem 'pg'
 gem 'devise'
-gem 'simple_token_authentication'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
@@ -23,9 +22,6 @@ gem 'nokogiri'
 
 group :development do
   gem 'listen', '~> 3.8'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 gem 'puma'
