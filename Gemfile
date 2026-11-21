@@ -19,6 +19,7 @@ group :development, :test do
 end
 
 gem 'nokogiri'
+gem 'base64'
 
 group :development do
   gem 'listen', '~> 3.8'

@@ -232,6 +232,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  base64
   bootsnap (>= 1.1.0)
   byebug
   devise
