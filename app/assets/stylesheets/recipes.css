@@ -213,6 +213,58 @@ h2 {
   font-weight: 700;
 }
 
+.password-form {
+  display: grid;
+  gap: 0.5rem;
+  max-inline-size: 20rem;
+}
+
+.password-form label {
+  font-weight: 600;
+}
+
+.password-form input[type="password"],
+.password-form input[type="text"] {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--muted);
+  border-radius: 0.35rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.password-form .show-password {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.password-form .show-password label {
+  font-weight: normal;
+}
+
+.password-form button {
+  justify-self: start;
+  padding: 0.5rem 1.25rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: var(--accent);
+  color: var(--paper);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-error {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.form-error:empty {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),

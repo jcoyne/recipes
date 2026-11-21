@@ -7,6 +7,36 @@ const app = document.getElementById("app");
 const prevLink = document.querySelector('[data-nav="prev"]');
 const nextLink = document.querySelector('[data-nav="next"]');
 const brandLink = document.querySelector('[data-nav="list"]');
+const recipeNav = document.querySelector(".site-header nav");
+
+// A light password gate to keep casual scrapers out. This is NOT security: the password is
+// only Base64-encoded here, and the JSON API itself is not protected.
+const PASSWORD_B64 = "cmVjaXBlcw==";
+const UNLOCKED_KEY = "recipes-unlocked";
+
+let unlocked = false;
+try {
+  unlocked = sessionStorage.getItem(UNLOCKED_KEY) === "1";
+} catch {
+  // Storage unavailable (e.g. blocked); ask for the password on each page load instead.
+}
+
+function passwordMatches(value) {
+  try {
+    return btoa(value) === PASSWORD_B64;
+  } catch {
+    return false; // btoa throws on characters outside Latin-1, which can't match anyway
+  }
+}
+
+function unlock() {
+  unlocked = true;
+  try {
+    sessionStorage.setItem(UNLOCKED_KEY, "1");
+  } catch {
+    // Not remembered; the gate will reappear on the next page load.
+  }
+}
 
 let recipesPromise;
 
@@ -98,7 +128,47 @@ function errorView(error) {
   return [h("h1", { tabindex: "-1" }, "Couldn’t load recipes"), h("p", { role: "alert" }, error.message)];
 }
 
+function passwordView() {
+  document.title = "Recipes";
+  const input = h("input", {
+    id: "password", name: "password", type: "password", autocomplete: "current-password",
+    enterkeyhint: "done", required: true,
+  });
+  const error = h("p", { class: "form-error", role: "alert" });
+  const showPassword = h("input", { id: "show-password", type: "checkbox" });
+  showPassword.addEventListener("change", () => {
+    input.type = showPassword.checked ? "text" : "password";
+  });
+
+  const form = h("form", { class: "password-form" },
+    h("label", { for: "password" }, "Password"),
+    input,
+    h("div", { class: "show-password" }, showPassword, h("label", { for: "show-password" }, "Show password")),
+    error,
+    h("button", { type: "submit" }, "Unlock"));
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (passwordMatches(input.value)) {
+      unlock();
+      render();
+    } else {
+      error.textContent = "That password isn’t right. Try again.";
+      input.select();
+    }
+  });
+
+  return [h("h1", { tabindex: "-1" }, "Recipes"), h("p", {}, "Enter the password to see the recipes."), form];
+}
+
 async function render({ focus = true } = {}) {
+  recipeNav.hidden = !unlocked;
+  if (!unlocked) {
+    app.replaceChildren(...passwordView());
+    app.querySelector("#password").focus();
+    return;
+  }
+
   const route = routeFor(location.pathname);
   let content;
   try {
