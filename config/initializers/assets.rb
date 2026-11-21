@@ -5,7 +5,3 @@ Rails.application.config.assets.version = "1.0"
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
-
-# public/assets holds the committed Ember frontend build, so keep Rails' compiled
-# assets (and assets:clobber) out of it.
-Rails.application.config.assets.prefix = "/rails-assets"

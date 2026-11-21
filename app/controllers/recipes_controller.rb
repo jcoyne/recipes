@@ -8,7 +8,7 @@ class RecipesController < ApplicationController
         @recipes = Recipe.all
         headers['Access-Control-Allow-Origin'] = '*'
       end
-      format.html { render file: 'public/index.html', layout: false }
+      format.html { render :app }
     end
 
   end
@@ -16,7 +16,7 @@ class RecipesController < ApplicationController
   def show
     respond_to do |format|
       format.json { @recipe = Recipe.find(params[:id]) }
-      format.html { render file: 'public/index.html', layout: false }
+      format.html { render :app }
     end
   end
 
