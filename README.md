@@ -18,8 +18,11 @@ bundle install
 
 ## Import recipes
 
+Most recipe sites (Bon Appétit, NYT Cooking, ...) publish a schema.org Recipe as JSON-LD, which
+`import:ld` reads (`import:ba` is the same thing):
+
 ```
-rake import:ba[https://www.bonappetit.com/recipe/make-ahead-gravy]
+rake import:ld[https://www.bonappetit.com/recipe/make-ahead-gravy]
 rake import:ec[https://www.epicurious.com/recipes/food/views/pitaquiles-pita-in-tomato-sauce]
 ```
 
