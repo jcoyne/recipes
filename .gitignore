@@ -22,3 +22,6 @@ node_modules/
 # Ignore sprockets generated manifest
 /public/assets/manifest*
 /public/assets/.sprockets-manifest*
+
+# Compiled Rails assets (public/assets is the committed Ember build)
+/public/rails-assets

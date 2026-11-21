@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 ruby '~> 4.0'
 
 gem 'rails', '~> 8.1.0'
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem 'propshaft'
 gem 'devise'
 # Use sqlite3 as the database for Active Record (users only; recipes live in data/recipes)
 gem 'sqlite3'
