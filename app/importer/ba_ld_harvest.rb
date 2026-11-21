@@ -6,7 +6,7 @@ class BaLdHarvest < Harvest
     {
       title: json['name'],
       link: uri_str,
-      thumbnail: json['image'],
+      thumbnail: Array(json['image']).first,
       servings: json['recipeYield'],
       ingredients: json['recipeIngredient'],
       preparation_steps: steps(json['recipeInstructions'])
