@@ -16,7 +16,8 @@ class Recipe
   attribute :id, :string
   attribute :title, :string
   attribute :link, :string
-  attribute :thumbnail, :string
+  attribute :thumbnail, :string # the original image URL
+  attribute :image, :string # local copy, as an asset path under app/assets/images (see ImageDownload)
   attribute :servings, :string
   attribute :ingredients, default: -> { [] }
   attribute :preparation_steps, default: -> { [] }

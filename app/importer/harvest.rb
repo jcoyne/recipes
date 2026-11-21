@@ -10,7 +10,8 @@ class Harvest
           end
 
     html = Nokogiri::HTML(doc)
-    parse(html, uri_str)
+    attrs = parse(html, uri_str)
+    attrs.merge(image: ImageDownload.fetch(attrs[:thumbnail]))
   end
 
   # Override this in subclasses

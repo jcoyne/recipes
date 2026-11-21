@@ -77,7 +77,7 @@ function recipeView(recipe) {
     h("article", { class: "recipe" },
       h("h1", { tabindex: "-1" }, heading),
       recipe.servings ? h("p", { class: "servings" }, recipe.servings) : null,
-      recipe.thumbnail ? h("img", { class: "photo", src: recipe.thumbnail, alt: "", decoding: "async" }) : null,
+      recipe.image_url ? h("img", { class: "photo", src: recipe.image_url, alt: "", decoding: "async" }) : null,
       h("div", { class: "recipe-body" },
         h("section", { class: "ingredients", "aria-labelledby": "ingredients-heading" },
           h("h2", { id: "ingredients-heading" }, "Ingredients"),
