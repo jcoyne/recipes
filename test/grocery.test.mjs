@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { groceryList, ingredientKeys, ingredientName, isLabel } from "../site/grocery.js";
+import { groceryList, ingredientKeys, ingredientName, isLabel, storeSection } from "../site/grocery.js";
 
 test("strips amounts, units and notes from the name", () => {
   assert.equal(ingredientName("4 garlic cloves, thinly sliced"), "garlic cloves");
@@ -60,4 +60,40 @@ test("groups lines from several recipes, keeping each as written", () => {
   const garlic = list.find((group) => group.key === "garlic");
   assert.deepEqual(garlic.lines.map(({ text, recipe }) => [text, recipe.id]),
     [["4 garlic cloves, thinly sliced", "gnocchi"], ["1 garlic clove, finely grated", "fish"]]);
+});
+
+test("strips a second amount after plus, and keeps modifiers before a comma", () => {
+  assert.equal(ingredientName("1 Tbsp. plus 1 tsp. sugar"), "sugar");
+  assert.equal(ingredientName("Pinch of ground nutmeg"), "ground nutmeg");
+  assert.equal(ingredientName("A small handful of rosemary"), "rosemary");
+  assert.equal(ingredientName("1 head of purple cabbage"), "purple cabbage");
+  assert.equal(ingredientName("Bunch cilantro"), "cilantro");
+  assert.equal(ingredientName("1 Tbsp. plus 1 tsp. Diamond Crystal or 2¼ tsp. Morton kosher salt"), "kosher salt");
+  assert.equal(ingredientName("½ cup roasted, salted nuts, coarsely chopped"), "roasted, salted nuts");
+  assert.deepEqual(ingredientKeys("2 tablespoons melted and cooled butter (optional)"), ["butter"]);
+});
+
+test("leaves equipment off the list", () => {
+  assert.deepEqual(groceryList([{ ingredients: ["A potato ricer or food mill fitted with fine disk", "1 onion"] }]).map((g) => g.name), ["Onion"]);
+});
+
+test("sorts items into store sections", () => {
+  const section = (line) => storeSection(ingredientKeys(line)[0]);
+  assert.equal(section("4 garlic cloves"), "Produce");
+  assert.equal(section("1 teaspoon garlic powder"), "Grocery");
+  assert.equal(section("1 teaspoon grated fresh ginger"), "Produce");
+  assert.equal(section("1 teaspoon ground ginger"), "Grocery");
+  assert.equal(section("4 cups chicken broth"), "Grocery");
+  assert.equal(section("1 pound boneless, skinless chicken thighs"), "Meat");
+  assert.equal(section("4 (6-ounce) fish fillets"), "Meat");
+  assert.equal(section("¾ cup unsweetened coconut milk"), "Grocery");
+  assert.equal(section("1½ cups whole milk"), "Dairy");
+  assert.equal(section("3 large eggs"), "Dairy");
+  assert.equal(section("1 (28-ounce) can diced tomatoes"), "Grocery");
+  assert.equal(section("2 pints cherry or grape tomatoes"), "Produce");
+  assert.equal(section("1 red bell pepper"), "Produce");
+  assert.equal(section("½ teaspoon red-pepper flakes"), "Grocery");
+  assert.equal(section("1 pound green beans"), "Produce");
+  assert.equal(section("1 (15-ounce) can white beans"), "Grocery");
+  assert.equal(section("Condiment of choice"), "Other");
 });
