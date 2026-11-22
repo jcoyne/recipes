@@ -11,13 +11,15 @@ const UNITS = [
   "knobs?", "fillets?", "links?", "rounds?",
 ];
 // "2 (12- to 18-ounce) packages", "1½ cups", "2 to 2 ½ pounds", "14–16 oz." and the like.
-const QUANTITY = new RegExp(
-  String.raw`^(?:about |scant |heaping )?${NUMBER}(?:\s*${NUMBER})*` +
-  String.raw`(?:\s*(?:-|–|to|or)\s*${NUMBER}(?:\s*${NUMBER})*)?\s*(?:\([^)]*\)\s*)?` +
+// A number directly followed by a size ("8-oz.", '2"', '1"-') is a package or piece size, as in
+// Bon Appétit's "2 8-oz. cans", not the second half of a mixed number like "1 ½".
+const SIZE = String.raw`${NUMBER}(?:"|-(?:inch|in|oz|ounce|lb|pound)s?\b\.?)-?`;
+const AMOUNT = String.raw`${NUMBER}(?:\s*${NUMBER}(?!["-]))*` +
+  String.raw`(?:\s*(?:-|–|to|or)\s*${NUMBER}(?:\s*${NUMBER}(?!["-]))*)?\s*(?:${SIZE}\s*)?(?:\([^)]*\)\s*)?` +
   // Up to two units, as in "14–16 oz. block firm tofu".
-  String.raw`(?:(?:${UNITS.join("|")})\b\.?\s*(?:\([^)]*\)\s*)?(?:of\s+)?){0,2}`,
-  "i",
-);
+  String.raw`(?:(?:${UNITS.join("|")})\b\.?\s*(?:\([^)]*\)\s*)?(?:of\s+)?){0,2}`;
+// An amount, optionally followed by the same amount another way: "4 blocks/12 ounces".
+const QUANTITY = new RegExp(String.raw`^(?:about |scant |heaping )?${AMOUNT}(?:/\s*${AMOUNT})?`, "i");
 // Words that describe how much or how an ingredient is prepared, not what to buy.
 const DESCRIPTORS = new Set([
   "large", "medium", "small", "fresh", "freshly", "chopped", "minced", "sliced", "thinly", "finely", "coarsely",

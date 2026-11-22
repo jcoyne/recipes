@@ -18,6 +18,15 @@ test("singular and plural units", () => {
   assert.equal(ingredientName("2 bunches scallions"), "scallions");
   assert.equal(ingredientName("1 large egg"), "large egg");
   assert.equal(ingredientName("14–16 oz. block firm tofu, drained"), "firm tofu");
+  assert.equal(ingredientName("4 blocks/12 ounces instant dried ramen noodles, flavor packets discarded"), "instant dried ramen noodles");
+  assert.equal(ingredientName("1 cup/240 ml whole milk"), "whole milk");
+  assert.equal(ingredientName("1/2 cup minced fresh mint"), "minced fresh mint");
+  assert.equal(ingredientName("2 8-oz. cans water chestnuts, drained"), "water chestnuts");
+  assert.equal(ingredientName("1 7-oz. bag mung bean sprouts (about 2½ cups)"), "mung bean sprouts");
+  assert.equal(ingredientName('1 2" piece ginger, peeled'), "ginger");
+  assert.equal(ingredientName('1 1"-piece ginger, peeled, finely grated'), "ginger");
+  assert.equal(ingredientName("1 ½ pounds baby bok choy"), "baby bok choy");
+  assert.equal(ingredientName("2-3 garlic cloves"), "garlic cloves");
 });
 
 test("gives the same key to the same ingredient", () => {
