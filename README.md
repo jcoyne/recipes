@@ -26,8 +26,16 @@ rake import:ld[https://www.bonappetit.com/recipe/make-ahead-gravy]
 rake import:ec[https://www.epicurious.com/recipes/food/views/pitaquiles-pita-in-tomato-sauce]
 ```
 
-Each import writes the recipe file, downloads its image and updates `index.json`. To fetch images
-for recipes that don't have one yet:
+Each import writes the recipe file, downloads its image and updates `index.json`. It also picks the
+list page section (Breakfast, Mains, Soups & Stews, Salads, Sides, Desserts) from the page's
+`recipeCategory`, and whether it's vegetarian from `suitableForDiet`, falling back to the page's
+keywords when either is missing. Check what it printed, and fix it if needed:
+
+```
+rake 'recipes:categorize[shakshuka-with-feta,Mains,yes]'   # the last argument (vegetarian) is optional
+```
+
+To fetch images for recipes that don't have one yet:
 
 ```
 rake recipes:download_images

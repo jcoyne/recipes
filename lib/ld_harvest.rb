@@ -12,8 +12,45 @@ class LdHarvest < Harvest
       thumbnail: image_url(recipe['image']),
       servings: servings(recipe['recipeYield']),
       ingredients: Array(recipe['recipeIngredient']).map { |ingredient| text(ingredient) }.reject(&:empty?),
-      preparation_steps: steps(recipe['recipeInstructions'])
+      preparation_steps: steps(recipe['recipeInstructions']),
+      category: category(recipe),
+      vegetarian: vegetarian?(recipe)
     }
+  end
+
+  # The list page's sections, checked in order: pancakes tagged Breakfast and Main Course go
+  # under Breakfast, and a soup that's also a main course under Soups & Stews.
+  CATEGORY_RULES = [
+    ['Breakfast', /\b(breakfast|brunch)\b/],
+    ['Desserts', /\b(desserts?|cookies?|cakes?|pies?)\b/],
+    ['Soups & Stews', /\b(soups?|stews?|chili)\b/],
+    ['Salads', /\bsalads?\b/],
+    ['Mains', /\b(main course|main dish|mains?|entr[eé]es?)\b/],
+    ['Sides', /\b(side dish|sides?)\b/],
+    ['Mains', /\b(dinner|lunch)\b/]
+  ].freeze
+
+  # Uses the schema.org recipeCategory (e.g. NYT's "Dinner, Main Course, Soup"). Pages without
+  # one (Bon Appétit) often list courses among their free-form keywords instead.
+  def self.category(recipe)
+    categories = terms(recipe['recipeCategory'])
+    categories = terms(recipe['keywords']) if categories.empty?
+    CATEGORY_RULES.each { |name, pattern| return name if categories.any? { |term| term.match?(pattern) } }
+    nil
+  end
+
+  # suitableForDiet holds schema.org RestrictedDiet values, as names or URLs. Without one, look
+  # for a "vegetarian" or "vegan" keyword (as Bon Appétit uses).
+  def self.vegetarian?(recipe)
+    diets = Array(recipe['suitableForDiet']).map { |diet| diet.to_s.split('/').last }
+    return diets.intersect?(%w[VegetarianDiet VeganDiet]) unless diets.empty?
+
+    terms(recipe['keywords']).intersect?(%w[vegetarian vegan])
+  end
+
+  # recipeCategory and keywords may be a comma-separated string or a list.
+  def self.terms(value)
+    Array(value).flat_map { |item| item.to_s.split(',') }.map { |term| text(term).downcase }.reject(&:empty?)
   end
 
   # Pages can have several JSON-LD blocks (WebPage, Organization, ...), and a block can

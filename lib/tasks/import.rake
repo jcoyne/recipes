@@ -8,6 +8,8 @@ def import_recipe(harvester, url)
   recipe = Recipe.create!(harvester.harvest(url))
   puts "Imported #{recipe.id}: #{recipe.title} (#{recipe.ingredients.size} ingredients, " \
        "#{recipe.preparation_steps.size} steps, image #{recipe.image || 'none'})"
+  puts "  Section: #{recipe.category || 'none (set with rake recipes:categorize)'}" \
+       "#{', vegetarian' if recipe.vegetarian}"
 end
 
 namespace :import do

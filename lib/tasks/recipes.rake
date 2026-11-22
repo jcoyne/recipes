@@ -15,6 +15,23 @@ namespace :recipes do
     end
   end
 
+  desc "Set a recipe's list section, and optionally whether it's vegetarian " \
+       "(rake 'recipes:categorize[pasta-salad,Salads,no]')"
+  task :categorize, [:id, :category, :vegetarian] do |_t, args|
+    category = Recipe::CATEGORIES.find { |name| name.casecmp?(args[:category].to_s) } or
+      abort "Category must be one of: #{Recipe::CATEGORIES.join(', ')}"
+    recipe = Recipe.find(args[:id])
+    recipe.category = category
+    case args[:vegetarian]
+    when nil, '' then nil
+    when /\A(y|yes|true)\z/i then recipe.vegetarian = true
+    when /\A(n|no|false)\z/i then recipe.vegetarian = false
+    else abort 'Vegetarian must be yes or no'
+    end
+    recipe.save!
+    puts "#{recipe.id}: #{recipe.category}#{', vegetarian' if recipe.vegetarian}"
+  end
+
   desc 'Rebuild site/recipes/index.json from the recipe files'
   task :index do
     Recipe.write_index

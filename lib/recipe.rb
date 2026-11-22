@@ -13,7 +13,11 @@ class Recipe
   class DuplicateLink < StandardError; end
   class NotFound < StandardError; end
 
-  ATTRIBUTES = %w[id title link thumbnail image servings ingredients preparation_steps created_at].freeze
+  # category is one of CATEGORIES, the list page's sections in display order (nil until set);
+  # vegetarian is true or false.
+  ATTRIBUTES = %w[id title link thumbnail image servings ingredients preparation_steps category vegetarian
+                  created_at].freeze
+  CATEGORIES = ['Breakfast', 'Mains', 'Soups & Stews', 'Salads', 'Sides', 'Desserts'].freeze
   EXTENSION = '.b64'.freeze
   INDEX = 'index.json'.freeze
 

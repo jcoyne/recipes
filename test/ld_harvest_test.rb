@@ -73,6 +73,40 @@ class LdHarvestTest < Minitest::Test
     assert_equal ['1 cup flour'], attrs[:ingredients]
   end
 
+  def test_picks_a_section_from_recipe_category
+    {
+      'Dinner, Main Course, Soup' => 'Soups & Stews',
+      'Breakfast, Kid-Friendly, Main Course, Pancakes' => 'Breakfast',
+      'Dinner, Side Dish, Vegetables' => 'Sides',
+      ['Salad', 'Main Course'] => 'Salads',
+      'Main Course, Side Dish, Vegetables' => 'Mains',
+      'Dinner, Noodles' => 'Mains',
+      'Desserts' => 'Desserts',
+      'Noodles' => nil
+    }.each do |recipe_category, section|
+      attrs = LdHarvest.parse(page(recipe('recipeCategory' => recipe_category, 'keywords' => 'soup, dessert')), URL)
+      section ? assert_equal(section, attrs[:category], recipe_category) : assert_nil(attrs[:category], recipe_category)
+    end
+  end
+
+  def test_falls_back_to_keywords_without_a_recipe_category
+    assert_equal 'Sides', LdHarvest.parse(page(recipe('keywords' => ['ba’s best', 'side', 'thanksgiving'])), URL)[:category]
+    assert_nil LdHarvest.parse(page(recipe('keywords' => 'thanksgiving, potato')), URL)[:category]
+    assert_nil LdHarvest.parse(page(recipe), URL)[:category]
+  end
+
+  def test_reads_vegetarian_from_suitable_for_diet
+    assert LdHarvest.parse(page(recipe('suitableForDiet' => 'VegetarianDiet')), URL)[:vegetarian]
+    assert LdHarvest.parse(page(recipe('suitableForDiet' => ['https://schema.org/VeganDiet'])), URL)[:vegetarian]
+    refute LdHarvest.parse(page(recipe('suitableForDiet' => 'GlutenFreeDiet', 'keywords' => 'vegetarian')), URL)[:vegetarian]
+  end
+
+  def test_falls_back_to_vegetarian_keywords_without_suitable_for_diet
+    assert LdHarvest.parse(page(recipe('keywords' => ['side', 'vegetarian'])), URL)[:vegetarian]
+    refute LdHarvest.parse(page(recipe('keywords' => 'Vegetarian Thanksgiving')), URL)[:vegetarian]
+    refute LdHarvest.parse(page(recipe), URL)[:vegetarian]
+  end
+
   def test_trims_non_breaking_spaces
     attrs = LdHarvest.parse(page(recipe('name' => "Beans and Greens ", 'recipeIngredient' => ["1  cup flour"])), URL)
     assert_equal 'Beans and Greens', attrs[:title]
