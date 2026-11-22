@@ -29,11 +29,18 @@ body {
 
 a {
   color: var(--accent);
+  text-decoration: none;
   text-underline-offset: 0.15em;
 }
 
 a:hover {
   color: var(--hover);
+}
+
+/* Header links have their own hover style (a highlighted background). */
+main a:hover,
+main a:focus-visible {
+  text-decoration: underline;
 }
 
 :focus-visible {
