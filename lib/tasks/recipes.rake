@@ -32,6 +32,35 @@ namespace :recipes do
     puts "#{recipe.id}: #{recipe.category}#{', vegetarian' if recipe.vegetarian}"
   end
 
+  desc "Add a keyword to recipes (rake 'recipes:tag[Thanksgiving,sausage-stuffing-recipe,pasta-salad]')"
+  task :tag, [:keyword] do |_t, args|
+    keyword = args[:keyword].to_s.strip
+    abort 'Usage: rake recipes:tag[Keyword,recipe-id,...]' if keyword.empty? || args.extras.empty?
+
+    args.extras.each do |id|
+      recipe = Recipe.find(id)
+      # Reuse the existing spelling of a keyword, so "thanksgiving" doesn't split off from "Thanksgiving".
+      existing = Recipe.all.flat_map(&:keywords).find { |k| k.casecmp?(keyword) } || keyword
+      next puts("#{id}: already has #{existing}") if recipe.keywords.any? { |k| k.casecmp?(existing) }
+
+      recipe.keywords = (recipe.keywords + [existing]).sort_by(&:downcase)
+      recipe.save!
+      puts "#{id}: #{recipe.keywords.join(', ')}"
+    end
+  end
+
+  desc "Remove a keyword from recipes (rake 'recipes:untag[Thanksgiving,pasta-salad]')"
+  task :untag, [:keyword] do |_t, args|
+    abort 'Usage: rake recipes:untag[Keyword,recipe-id,...]' if args[:keyword].to_s.strip.empty? || args.extras.empty?
+
+    args.extras.each do |id|
+      recipe = Recipe.find(id)
+      recipe.keywords = recipe.keywords.reject { |k| k.casecmp?(args[:keyword].strip) }
+      recipe.save!
+      puts "#{id}: #{recipe.keywords.empty? ? 'no keywords' : recipe.keywords.join(', ')}"
+    end
+  end
+
   desc 'Rebuild site/recipes/index.json from the recipe files'
   task :index do
     Recipe.write_index

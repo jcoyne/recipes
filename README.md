@@ -35,6 +35,13 @@ keywords when either is missing. Check what it printed, and fix it if needed:
 rake 'recipes:categorize[shakshuka-with-feta,Mains,yes]'   # the last argument (vegetarian) is optional
 ```
 
+Keywords (e.g. Thanksgiving) are picked by hand, not imported, and the list page lets you browse by them:
+
+```
+rake 'recipes:tag[Thanksgiving,sausage-stuffing-recipe,pasta-salad]'
+rake 'recipes:untag[Thanksgiving,pasta-salad]'
+```
+
 To fetch images for recipes that don't have one yet:
 
 ```

@@ -14,9 +14,9 @@ class Recipe
   class NotFound < StandardError; end
 
   # category is one of CATEGORIES, the list page's sections in display order (nil until set);
-  # vegetarian is true or false.
+  # vegetarian is true or false; keywords are hand-picked labels to browse by (e.g. "Thanksgiving").
   ATTRIBUTES = %w[id title link thumbnail image servings ingredients preparation_steps category vegetarian
-                  created_at].freeze
+                  keywords created_at].freeze
   CATEGORIES = ['Breakfast', 'Mains', 'Soups & Stews', 'Salads', 'Sides', 'Desserts'].freeze
   EXTENSION = '.b64'.freeze
   INDEX = 'index.json'.freeze
@@ -64,6 +64,7 @@ class Recipe
     attrs.each { |name, value| public_send("#{name}=", value) if ATTRIBUTES.include?(name.to_s) }
     @ingredients ||= []
     @preparation_steps ||= []
+    @keywords ||= []
   end
 
   def attributes
