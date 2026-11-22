@@ -3,7 +3,7 @@
   --paper: #1c1c1c;
   --ink: #f5e8d8;
   --muted: #b8ac9e;
-  --rule: #3a3530;
+  --rule: #4a4a4a;
   --header: #daa520;
   --header-ink: #1c1c1c;
   --accent: #ff6f61;
@@ -153,7 +153,7 @@ h2 {
 
 .recipe-section h2 {
   padding-block-end: 0.25rem;
-  border-block-end: 2px solid var(--header);
+  border-block-end: 1px solid var(--rule);
 }
 
 .recipe-list {
