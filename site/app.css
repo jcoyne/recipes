@@ -147,6 +147,11 @@ h2 {
   margin-block-start: 1.75rem;
 }
 
+.filter-status + .recipe-section,
+.list-header + .filter-status:empty + .recipe-section {
+  margin-block-start: 0.5rem;
+}
+
 .recipe-section h2 {
   padding-block-end: 0.25rem;
   border-block-end: 2px solid var(--header);
@@ -170,11 +175,16 @@ h2 {
   flex: none;
 }
 
+/* The filter sits on the right; the list page's h1 is visually hidden. */
+.list-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .list-filter {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-block: 0.75rem 0;
 }
 
 .list-filter label {
@@ -187,6 +197,7 @@ h2 {
 .filter-status {
   margin-block: 0.25rem 0;
   color: var(--muted);
+  text-align: end;
 }
 
 .filter-status:empty {
