@@ -2,7 +2,8 @@
 
 A static recipe site (`site/`) plus Ruby tooling for importing recipes into it.
 
-- `site/index.html`, `app.js`, `app.css` — the front end. It asks for a password (`recipes`) before
+- `site/index.html`, `app.js`, `app.css` — the front end. `grocery.js` groups the ingredients of the
+  recipes picked for the grocery list (tested with `node --test`, which `rake test` runs too). It asks for a password (`recipes`) before
   showing anything; this only keeps casual scrapers away and is not real security.
 - `site/recipes/<md5>.b64` — one Base64-encoded JSON file per recipe, named by the MD5 of its
   contents. `site/recipes/index.json` lists them, oldest first.

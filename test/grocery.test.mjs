@@ -1,0 +1,54 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { groceryList, ingredientKeys, ingredientName, isLabel } from "../site/grocery.js";
+
+test("strips amounts, units and notes from the name", () => {
+  assert.equal(ingredientName("4 garlic cloves, thinly sliced"), "garlic cloves");
+  assert.equal(ingredientName("2 (12- to 18-ounce) packages shelf-stable potato gnocchi"), "shelf-stable potato gnocchi");
+  assert.equal(ingredientName("¾ tsp. (4 g) baking soda"), "baking soda");
+  assert.equal(ingredientName("2 to 2 ½ pounds boneless pork shoulder, trimmed"), "boneless pork shoulder");
+  assert.equal(ingredientName("1 ½ pounds boneless, skinless chicken thighs"), "boneless, skinless chicken thighs");
+  assert.equal(ingredientName("1½ tsp. Diamond Crystal or ¾ tsp. Morton kosher salt, plus more"), "kosher salt");
+  assert.equal(ingredientName("Grated Parmesan, for serving"), "Grated Parmesan");
+});
+
+test("singular and plural units", () => {
+  assert.equal(ingredientName("1 box spaghetti"), "spaghetti");
+  assert.equal(ingredientName("2 boxes chicken broth"), "chicken broth");
+  assert.equal(ingredientName("2 bunches scallions"), "scallions");
+  assert.equal(ingredientName("1 large egg"), "large egg");
+  assert.equal(ingredientName("14–16 oz. block firm tofu, drained"), "firm tofu");
+});
+
+test("gives the same key to the same ingredient", () => {
+  assert.deepEqual(ingredientKeys("2 tablespoons extra-virgin olive oil"), ["olive oil"]);
+  assert.deepEqual(ingredientKeys("5 tablespoons extra virgin olive oil"), ["olive oil"]);
+  assert.deepEqual(ingredientKeys("1 garlic clove, finely grated"), ["garlic"]);
+  assert.deepEqual(ingredientKeys("Freshly ground black pepper"), ["pepper"]);
+  assert.deepEqual(ingredientKeys("2 pints small tomatoes"), ["tomato"]);
+  assert.notDeepEqual(ingredientKeys("1 (28-ounce) can diced tomatoes"), ["tomato"]);
+  assert.deepEqual(ingredientKeys("½ teaspoon red-pepper flakes"), ["red-pepper flake"]);
+  assert.deepEqual(ingredientKeys("1 pound boneless, skinless chicken thighs"), ["boneless skinless chicken thigh"]);
+  assert.deepEqual(ingredientKeys("8 bone-in, skin-on chicken thighs"), ["bone-in skin-on chicken thigh"]);
+});
+
+test("splits salt and pepper into two items", () => {
+  assert.deepEqual(ingredientKeys("Kosher salt and black pepper"), ["salt", "pepper"]);
+});
+
+test("skips labels", () => {
+  assert.ok(isLabel("For the sauce:"));
+  assert.ok(!isLabel("1 cup yogurt"));
+});
+
+test("groups lines from several recipes, keeping each as written", () => {
+  const gnocchi = { id: "gnocchi", title: "Gnocchi", ingredients: ["For the sauce:", "4 garlic cloves, thinly sliced", "2 tablespoons extra-virgin olive oil", "Salt and pepper"] };
+  const fish = { id: "fish", title: "Fish", ingredients: ["1 garlic clove, finely grated", "3 tablespoons olive oil"] };
+  const list = groceryList([gnocchi, fish]);
+
+  assert.deepEqual(list.map((group) => group.name), ["Garlic", "Olive oil", "Pepper", "Salt"]);
+  assert.equal(groceryList([{ ingredients: ["¼ cup thinly sliced or torn basil leaves (optional)"] }])[0].name, "Basil");
+  const garlic = list.find((group) => group.key === "garlic");
+  assert.deepEqual(garlic.lines.map(({ text, recipe }) => [text, recipe.id]),
+    [["4 garlic cloves, thinly sliced", "gnocchi"], ["1 garlic clove, finely grated", "fish"]]);
+});
