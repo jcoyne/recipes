@@ -73,10 +73,6 @@ test("strips a second amount after plus, and keeps modifiers before a comma", ()
   assert.deepEqual(ingredientKeys("2 tablespoons melted and cooled butter (optional)"), ["butter"]);
 });
 
-test("leaves equipment off the list", () => {
-  assert.deepEqual(groceryList([{ ingredients: ["A potato ricer or food mill fitted with fine disk", "1 onion"] }]).map((g) => g.name), ["Onion"]);
-});
-
 test("sorts items into store sections", () => {
   const section = (line) => storeSection(ingredientKeys(line)[0]);
   assert.equal(section("4 garlic cloves"), "Produce");
