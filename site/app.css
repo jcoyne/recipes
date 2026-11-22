@@ -1,11 +1,11 @@
 :root {
-  /* A single dark theme. The golden header bar carries soft-black text (7.6:1). */
+  /* A single dark theme. */
   --paper: #1c1c1c;
   --ink: #f5e8d8;
   --muted: #b8ac9e;
   --rule: #4a4a4a;
-  --header: #daa520;
-  --header-ink: #1c1c1c;
+  --header: #0f0e0d;
+  --header-ink: #f5e8d8;
   --accent: #ff6f61;
   --hover: #ff4500;
   --veg: #a3e635;
@@ -109,8 +109,7 @@ h1:focus {
 
 .nav-list a:hover,
 .nav-list button:hover {
-  /* Burnt orange text would be unreadable on the gold bar, so darken the bar instead. */
-  background: rgb(0 0 0 / 0.15);
+  background: rgb(255 255 255 / 0.12);
 }
 
 .site-header :focus-visible {
