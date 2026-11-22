@@ -79,6 +79,6 @@ class LdHarvest < Harvest
   # Some sites put HTML tags or entities in JSON-LD text; reduce it to plain text, keeping
   # line breaks (e.g. a "Do Ahead:" note after a step) but tidying spaces within each line.
   def self.text(value)
-    Nokogiri::HTML5.fragment(value.to_s).text.split("\n").map { |line| line.gsub(/\s+/, ' ').strip }.reject(&:empty?).join("\n")
+    Nokogiri::HTML5.fragment(value.to_s).text.split("\n").map { |line| line.gsub(/[[:space:]]+/, ' ').strip }.reject(&:empty?).join("\n")
   end
 end

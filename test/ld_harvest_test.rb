@@ -72,4 +72,10 @@ class LdHarvestTest < Minitest::Test
     assert_equal '4 servings', attrs[:servings]
     assert_equal ['1 cup flour'], attrs[:ingredients]
   end
+
+  def test_trims_non_breaking_spaces
+    attrs = LdHarvest.parse(page(recipe('name' => "Beans and Greens ", 'recipeIngredient' => ["1  cup flour"])), URL)
+    assert_equal 'Beans and Greens', attrs[:title]
+    assert_equal ['1 cup flour'], attrs[:ingredients]
+  end
 end
