@@ -93,3 +93,11 @@ test("sorts items into store sections", () => {
   assert.equal(section("1 (15-ounce) can white beans"), "Grocery");
   assert.equal(section("Condiment of choice"), "Other");
 });
+
+test("leaves tap water off the list", () => {
+  const names = groceryList([{ ingredients: [
+    "2 tablespoons water, plus more as needed", "1 cup cold water", "Boiling water", "4 cups ice water",
+    "1 cup coconut water", "2 8-oz. cans water chestnuts", "1 onion",
+  ] }]).map((g) => g.name);
+  assert.deepEqual(names, ["Coconut water", "Onion", "Water chestnuts"]);
+});
