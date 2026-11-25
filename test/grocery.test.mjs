@@ -27,6 +27,8 @@ test("singular and plural units", () => {
   assert.equal(ingredientName('1 1"-piece ginger, peeled, finely grated'), "ginger");
   assert.equal(ingredientName("1 ½ pounds baby bok choy"), "baby bok choy");
   assert.equal(ingredientName("2-3 garlic cloves"), "garlic cloves");
+  assert.equal(ingredientName("2 c. sugar"), "sugar");
+  assert.equal(ingredientName("2 carrots"), "carrots");
 });
 
 test("gives the same key to the same ingredient", () => {
@@ -90,6 +92,8 @@ test("sorts items into store sections", () => {
   assert.equal(section("1 red bell pepper"), "Produce");
   assert.equal(section("½ teaspoon red-pepper flakes"), "Grocery");
   assert.equal(section("1 pound green beans"), "Produce");
+  assert.equal(section("1 lb. cranberries"), "Produce");
+  assert.equal(section("1 cup dried cranberries"), "Grocery");
   assert.equal(section("1 (15-ounce) can white beans"), "Grocery");
   assert.equal(section("Condiment of choice"), "Other");
 });
